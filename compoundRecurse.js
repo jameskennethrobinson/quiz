@@ -1,4 +1,4 @@
-exports.words = function (list) {
+exports.findLargestCompound = function (list) {
 
 	var ans;
 	var sorted = Array.prototype.slice.apply(list).sort(function(a, b){
@@ -7,10 +7,16 @@ exports.words = function (list) {
 
 	function recurse (str, frag, end) {
 
+		//this should be return when length is zero
+		//instead is being run too many times
+		//not sure if actually needed - should create tests
+		////////////////////
 		if (sorted.length === 0){
-			return;
+			return
 		}
+		////////////////////
 
+		
 		if (frag === sorted[0]){
 			ans = frag;
 			return;
@@ -33,10 +39,10 @@ exports.words = function (list) {
 			var removed = str.splice(0, end).join("");
 			recurse(str.join(""), frag.concat(removed), 1)	
 		}
+	
 	}
 
 	recurse(sorted[0], "", 1);
 	return ans;
 
 }
-
