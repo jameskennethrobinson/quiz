@@ -1,17 +1,25 @@
 var words = function(list){
 
-	var largest = list[list.length-1];
+	//the sorting operation will present the greatest computational load in this problem
+	//"indexOf" will also present a large computational load when used over a very large set of words
 
-	(function recurse (str, frag, end){
+	var sorted = list.sort(function(a, b){
+	  return b.length - a.length; 
+	});
 
-		if (end === largest.length){
+	var ind = 0;
+
+	return (function recurse (str, frag, end){
+
+		if (end === sorted[ind].length){
 			console.log('not found');
-			return;
+			ind++;
+			recurse(sorted[ind], "", 1)
 		} 
 
-		if (frag === largest){
-			console.log(frag)
-			return;
+		if (frag === sorted[ind]){
+			console.log('found ------', frag);
+			return frag;
 		}
 
 		var substr = str.slice(0, end);
@@ -21,34 +29,16 @@ var words = function(list){
 		if (list.indexOf(substr) > -1){
 			var str = str.split("");
 			var removed = str.splice(0, end).join("");
-			console.log(str.join(""))
 			recurse(str.join(""), frag.concat(removed), end);
 		}
 
-		else {
-			recurse(str, "", ++end);
-		}
+		recurse(str, "", ++end);
 
-	})(largest, "", 1)
+	})(sorted[ind], "", 1)
 
 };
 
 
-var list = ['cat', 'dog', 'catdog', 'catdogcat', 'catlkdajflkfajk'];
+
+var list = ['cat', 'dog', 'catdog', 'catdogcat', 'catlkdajflkfajk', '1234', 'ladjf;lajksdf;lajskdf;laksdjfla;sdkf'];
 words(list);
-
-// var word = "james";
-// var arrWord = word.split("");
-// console.log(arrWord);
-// var frag = arrWord.splice(0,1);
-// console.log(frag);
-
-
-		// for (var i=1; i<=str.length; i++){
-		// 	substr = str.slice(0, i);
-		// 	if (list.indexOf(substr) > -1){
-		// 		console.log(list.indexOf(substr));
-		// 		var arrWord = word.split("");
-				
-		// 	}
-		// }
