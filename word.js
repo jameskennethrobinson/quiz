@@ -7,24 +7,28 @@ var words = function(list){
 	  return b.length - a.length; 
 	});
 
+	var sortedCopy = Array.prototype.slice.apply(list);
+
 	var ans;
+	var bool = false;
 
-	var ind = 0;
 
-	(function recurse (str, frag, end){
 
-		if (sorted[ind] === undefined) return;
+	function recurse (str, frag, end){
 
-		if (frag === sorted[ind]){
+		if (bool === true) return;
+
+		if (frag === sortedCopy[0]){
 			console.log('found ------', frag);
 			ans = frag;
+			bool = true;
 			return;
 		}
 
-		if (end === sorted[ind].length){
+		if (end === sortedCopy[0].length){
 			console.log('not found');
-			ind++;
-			recurse(sorted[ind], "", 1)
+			sortedCopy.shift();
+			recurse(sortedCopy[0], "", 1);
 		} 
 
 		var substr = str.slice(0, end);
@@ -39,7 +43,9 @@ var words = function(list){
 
 		recurse(str, "", ++end);
 
-	})(sorted[ind], "", 1)
+	}
+
+	recurse(sortedCopy[0], "", 1)
 
 	return ans;
 };
