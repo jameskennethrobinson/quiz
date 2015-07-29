@@ -1,11 +1,16 @@
-var words = function (list) {
+exports.words = function (list) {
 
 	var ans;
 	var sorted = Array.prototype.slice.apply(list).sort(function(a, b){
 	  return b.length - a.length; 
 	});
-	
+
 	function recurse (str, frag, end) {
+
+		if (sorted.length === 0){
+			return;
+		}
+
 		if (frag === sorted[0]){
 			ans = frag;
 			return;
@@ -35,6 +40,3 @@ var words = function (list) {
 
 }
 
-var list = ['cat', 'dog', 'catdog', 'catdogcatcatdogcat', 'dogdogdogdogcatcatcatcatcat', 'catdogcat'];
-
-console.log(words(list));
