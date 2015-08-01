@@ -1,48 +1,82 @@
 exports.findLargestCompound = function (list) {
 
 	var ans;
+
+	var ind = 0;
+
 	var sorted = Array.prototype.slice.apply(list).sort(function(a, b){
 	  return b.length - a.length; 
 	});
 
-	function recurse (str, frag, end) {
+	var obj = {};
 
-		//this should be return when length is zero
-		//instead is being run too many times
-		//not sure if actually needed - should create tests
-		////////////////////
-		if (sorted.length === 0){
+
+
+	sorted.forEach(function(item){
+		obj[item] = item;
+	})
+
+	function recurse (str, frag, end) {
+		
+
+		if (ind === sorted.length-1){
+			console.log('end of list reached')
 			return
 		}
-		////////////////////
 
-		
-		if (frag === sorted[0]){
+	
+
+		if (frag === sorted[ind]){
+			console.log('answer reached');
 			ans = frag;
 			return;
 		} 
 
-		if (end === sorted[0].length){
-			sorted.shift();
-			recurse(sorted[0], "", 1);
+		console.log('end: - ', end, 'length: - ', str.length)
+
+		if (end === str.length){
+			console.log('end of word reached');
+			//console.log('--------', obj[str]);
+			delete obj[str]
+			sorted.shift()
+			//++ind;
+			recurse(sorted[ind], "", 1);
 		}
 
-		var substr = str.slice(0, end);
-		var ind = sorted.indexOf(substr);
 
-		if (ind === -1){
+		var substr = str.slice(0, end);
+		
+		console.log('word being considered: - ', sorted[ind]);
+		console.log('substr being considerd: - ', substr)
+
+		var bool = obj.hasOwnProperty(substr) 
+
+		console.log('bool: - ', bool)
+
+	
+		if (!bool){
+			//console.log('fragment not found');
 			recurse(str, frag, ++end);
 		}
 
-		else{
+		if (bool){
+			console.log('match found!')
 			var str = str.split("");
 			var removed = str.splice(0, end).join("");
-			recurse(str.join(""), frag.concat(removed), 1)	
+			frag = frag.concat(removed);
+			str = str.join("");
+
+
+			console.log('remainder: ', str,' - removed: ', removed,  ' - frag: ', frag)
+
+			recurse(str, frag, 1)	
 		}
 	
 	}
 
-	recurse(sorted[0], "", 1);
+	recurse(sorted[ind], "", 1);
+	console.log('ans:', ans);
 	return ans;
+	// return obj
 
 }

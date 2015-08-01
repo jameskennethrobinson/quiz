@@ -2,17 +2,24 @@ var fs = require('fs');
 var utils = require('./compoundRecurse.js');
 var file = __dirname + '/words.txt';
 
-fs.readFile(file, function(err, data){
-	if (err) throw err;
-	var words = data.toString().split("\n");
-	//console.log(words);
-	var ans = utils.findLargestCompound(words);
-	console.log(ans);
-})
+var findLargest = function(){
+	fs.readFile(file, function(err, data){
+		if (err) throw err;
+		var words = data.toString().split("\n");
+		//console.log(words);
+		var ans = utils.findLargestCompound(words);
+		console.log(ans);
+	})
+};
+
+//findLargest();
 
 
 
-var list = ['cat', 'dog', 'catdog', 'catdogcatcatdogcat', 'dogdogdogdogcatcatcatcatcat', 'catdogcat'];
-var list1 = ['hello', 'my', 'name', 'is', 'ybas', 'ybasis'];
+var list = ['cat', 'dog', 'catdog','catdogcatcatdogcat', 'catdogcat'];
+var list1 = ['hello', 'my', 'name', 'is', 'ybas', 'ybasis', 'ybasisis', 'asdfasdfasdfasdf'];
 
-//console.log(utils.findLargestCompound(list));
+utils.findLargestCompound(list1)
+
+//list1.shift();
+//console.log(list1);
