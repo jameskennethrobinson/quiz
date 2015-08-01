@@ -3,39 +3,75 @@ var words = function (list) {
 	var sorted = Array.prototype.slice.apply(list).sort(function(a, b){
 	  return b.length - a.length; 
 	});
+
+	var obj = {};
 	var ans;
 
-	function recurse (str, frag, end) {
+	sorted.forEach(function(item){
+		obj[item] = item;
+	});
+
+	//console.log(obj)
+
+
+	function recurse (str, frag) {
+
+		console.log('fragment - ', frag, ' : string - ', sorted[0]);
+
+
+		if (obj[str]){
+			delete obj[str];
+		}
+
 		if (frag === sorted[0]){
-			ans = frag;
+			console.log('answer found');
+			var ans = frag;
 			return;
-		} 
-
-		if (end === sorted[0].length){
-			sorted.shift();
-			recurse(sorted[0], "", 1);
 		}
 
-		var substr = str.slice(0, end);
-		var ind = sorted.indexOf(substr);
+		for (var i=1; i<=str.length; i++){
 
-		if (ind === -1){
-			recurse(str, frag, ++end);
+			var substr = str.slice(0, i);
+
+			if (obj.hasOwnProperty(substr)){
+				console.log('fragment found - ', substr)
+				var str = str.split("");
+				var removed = str.splice(0, i).join("");
+				recurse(str.join(""), frag.concat(removed))
+				return;
+			}
+
 		}
 
+		console.log('This word is not a compound word');
+		return;
 
-		else{
-			var str = str.split("");
-			var removed = str.splice(0, end).join("");
-			recurse(str.join(""), frag.concat(removed), 0)	
-		}
+
+		//var substr = str.slice(0, end);
+
+		//var ind = sorted.indexOf(substr);
+		//var bool = obj.hasOwnProperty(substr);
+
+		//console.log(substr);
+		//console.log(bool);
+
+		// if (!bool){
+		// 	//recurse(str, frag, ++end);
+		// }
+
+
+		// else{
+		// 	var str = str.split("");
+		// 	var removed = str.splice(0, end).join("");
+		// 	recurse(str.join(""), frag.concat(removed), 0)	
+		// }
 	}
 
-	recurse(sorted[0], "", 1);
-	return ans;
+	recurse(sorted[0], "");
+	return ans
 
 }
 
-var list = ['cat', 'dog', 'catdog', 'catdogcatcatdogcat', 'catdogcat'];
+var list = ['cat', 'dog', 'catdog', 'catdogcat'];
 
 console.log(words(list));
