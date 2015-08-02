@@ -1,7 +1,8 @@
-var words = function (list) {
+exports.findLargestCompound = function (list) {
 
 	var obj = {};
 	var ans;
+	var ind = 0;
 
 	//could populate object and sort at the same time
 	var sorted = Array.prototype.slice.apply(list).sort(function(a, b){
@@ -14,13 +15,16 @@ var words = function (list) {
 
 	function recurse (str, frag) {
 
-		//console.log('fragment - ', frag, ' : string - ', str);
-
-		if (obj[sorted[0]]){
-			delete obj[sorted[0]];
+		if (ind === sorted.length){
+			console.log('No compounds words in this list');
+			return;
 		}
 
-		if (frag === sorted[0]){
+		if (obj[sorted[ind]]){
+			delete obj[sorted[ind]];
+		}
+
+		if (frag === sorted[ind]){
 			console.log('answer found');
 			ans = frag;
 			return;
@@ -30,10 +34,7 @@ var words = function (list) {
 
 			var substr = str.slice(0, i);
 
-			//console.log('substr - ', substr)
-
 			if (obj.hasOwnProperty(substr)){
-				//console.log('fragment found -', substr)
 				var str = str.split("");
 				var removed = str.splice(0, i).join("");
 				recurse(str.join(""), frag.concat(removed))
@@ -42,8 +43,8 @@ var words = function (list) {
 
 		}
 
-		console.log(sorted[0], 'is not a compound word');
-		return;
+		++ind;
+		recurse(sorted[ind], "");
 	}
 
 	recurse(sorted[0], "");
@@ -51,7 +52,3 @@ var words = function (list) {
 	return ans
 
 };
-
-var list = ['cat', 'dog', 'catdog', 'catdogcat', 'a;dlkfja;dlkfja;skf'];
-
-console.log(words(list));
