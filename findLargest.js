@@ -8,6 +8,7 @@ exports.findLargestCompound = function (list) {
 	var sorted = Array.prototype.slice.apply(list).sort(function(a, b){
 	  return b.length - a.length; 
 	});
+	//console.log(sorted)
 
 	sorted.forEach(function(item){
 		obj[item] = item;

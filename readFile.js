@@ -1,5 +1,5 @@
 var fs = require('fs');
-var utils = require('./words1.js');
+var utils = require('./findLargest.js');
 var file = __dirname + '/words.txt';
 
 var findLargest = function(){
@@ -9,8 +9,7 @@ var findLargest = function(){
 		console.log(utils.findLargestCompound(words));
 	})
 };
-
-console.log(findLargest());
+findLargest();
 
 var list = ['cat', 'dog', 'catdog','catdogcatcatdogcat', 'catdogcat'];
 var list1 = ['hello', 'my', 'name', 'is', 'ybas', 'ybasis', 'ybasisis', 'asdfasdfasdfasdf'];
