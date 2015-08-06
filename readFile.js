@@ -2,14 +2,14 @@ var fs = require('fs');
 var utils = require('./findLargest.js');
 var file = __dirname + '/words.txt';
 
-var findLargest = function(){
-	fs.readFile(file, function(err, data){
+var findLargest = function(words){
+	fs.readFile(words, function(err, data){
 		if (err) throw err;
 		var words = data.toString().split("\n");
-		console.log(utils.findLargestCompound(words));
+		var hash = utils.makeHash(words);
+		var sorted = utils.sortList(words);
+		console.log(utils.findCompoundInList(sorted, hash));
 	})
 };
-findLargest();
 
-var list = ['cat', 'dog', 'catdog','catdogcatcatdogcat', 'catdogcat'];
-var list1 = ['hello', 'my', 'name', 'is', 'ybas', 'ybasis', 'ybasisis', 'asdfasdfasdfasdf'];
+findLargest(file);

@@ -1,88 +1,57 @@
-exports.findLargestCompound = function (list) {
+exports.makeHash = function (list) {
 
 	var obj = {};
-	var ans;
-	var ind = 0;
-
-	//could populate object and sort at the same time
-	var sorted = Array.prototype.slice.apply(list).sort(function(a, b){
-	  return b.length - a.length; 
-	});
-	console.log(sorted)
-
-	sorted.forEach(function(item){
+	
+	list.forEach(function(item){
 		obj[item] = item;
 	});
 
-	function recurse (str, frag) {
+	return obj;
+};
 
-		if (ind === sorted.length){
-			console.log('No compounds words in this list');
-			return;
+
+exports.sortList = function(list){
+	return Array.prototype.slice.apply(list).sort(function(a, b){
+	  return b.length - a.length; 
+	});
+}
+
+exports.findCompound = function(word, list, hash){
+
+	var ans = undefined;
+
+	(function recurse (str, frag) {
+
+		if (hash[word]){
+			delete hash[word];
 		}
 
-		//console.log('-------------')
-
-		//console.log('fragment - ', frag)
-
-
-		if (obj[sorted[ind]]){
-			delete obj[sorted[ind]];
-		}
-
-		if (frag === sorted[ind]){
-			console.log('answer found: ', frag);
+		if (frag === word){
 			ans = frag;
-			return;
+			return; 
 		}
-
-
 
 		for (var i=1; i<=str.length; i++){
-			
-		
+
 			var substr = str.slice(0, i);
-			//console.log('WHOLE - ', str);
-			//console.log('CONSIDERED:', substr)
 
-			if (obj.hasOwnProperty(substr)){ //&& i<=str.length){
-
-
-				//console.log('FOUND - ', substr)
+			if (hash.hasOwnProperty(substr)){ 
 				var remainder = str.split("").splice(i).join("");
-
-				//console.log('REMAINDER - ',remainder)
-				
 				recurse(remainder, frag.concat(substr))
-		
 			}
-			
 
 		}
-		
+	})(word, "")
 
-		//console.log(sorted[0], "is not a compound word")
-		//++ind;
-		//recurse(sorted[ind], "");
-	}
-
-
-
-	
-
-	if (!ans){
-		console.log(sorted[ind], 'is not a compound word');
-		++ind;
-		recurse(sorted[ind], "");
-		
-	}
-
-	console.log(ans, 'is the answer')
-
-	return ans
+	return ans;
 
 };
 
-var list = ['catar', 'c', 'cat', 'ar', 'asdfasdfasdfasdf', 'hellohellohellohello'];
-var list1 = ['catar', 'c', 'atar', 'cat', 'asdfasdfasdf']
-exports.findLargestCompound(list)
+exports.findCompoundInList = function(list, hash){
+	for (var i=0; i<list.length; i++){
+		if ( exports.findCompound(list[i], list, hash) ){
+			return list[i]
+			break;
+		}
+	}
+};
