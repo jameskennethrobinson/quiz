@@ -1,57 +1,15 @@
-exports.makeHash = function (list) {
+var fs = require('fs');
+var utils = require('./utils.js');
+var file = __dirname + '/' + process.argv[2];
 
-	var obj = {};
-	
-	list.forEach(function(item){
-		obj[item] = item;
-	});
-
-	return obj;
+var findLargest = function(words){
+	fs.readFile(words, function(err, data){
+		if (err) throw err;
+		var words = data.toString().split("\n");
+		var hash = utils.makeHash(words);
+		var sorted = utils.sortList(words);
+		console.log(utils.findCompoundInList(sorted, hash));
+	})
 };
 
-
-exports.sortList = function(list){
-	return Array.prototype.slice.apply(list).sort(function(a, b){
-	  return b.length - a.length; 
-	});
-}
-
-exports.findCompound = function(word, list, hash){
-
-	var ans = undefined;
-
-	(function recurse (str, frag) {
-
-		if (hash[word]){
-			delete hash[word];
-		}
-
-		if (frag === word){
-			ans = frag;
-			return; 
-		}
-
-		for (var i=1; i<=str.length; i++){
-
-			var substr = str.slice(0, i);
-
-			if (hash.hasOwnProperty(substr)){ 
-				var remainder = str.split("").splice(i).join("");
-				recurse(remainder, frag.concat(substr))
-			}
-
-		}
-	})(word, "")
-
-	return ans;
-
-};
-
-exports.findCompoundInList = function(list, hash){
-	for (var i=0; i<list.length; i++){
-		if ( exports.findCompound(list[i], list, hash) ){
-			return list[i]
-			break;
-		}
-	}
-};
+findLargest(file);
