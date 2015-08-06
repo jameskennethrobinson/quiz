@@ -12,5 +12,12 @@ Obviously, we are looking for a fresh solution, not based on others' code.
 # operation
 
 1) Fork/clone this repo to your local machine
+
+
 2) Navigate to root of local copy
-3) Enter "node findLargest" + your desired .txt file located in the root directory (e.g. node fineLargest word.txt)
+
+
+3) Enter "node findLargest" + your desired .txt file located in the root directory 
+
+
+  (e.g. node fineLargest word.txt)
