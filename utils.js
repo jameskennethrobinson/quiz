@@ -45,9 +45,10 @@ var findCompound = function(word, list, hash){
 		  var substr = str.slice(0, i);
 
 		  if (hash.hasOwnProperty(substr)){
-		  	recurse( str.slice(i), frag.concat(substr));
+		  	recurse(str.slice(i), frag.concat(substr))
 		  } 
 		  
+
 		}
 
 	})(word, "")
